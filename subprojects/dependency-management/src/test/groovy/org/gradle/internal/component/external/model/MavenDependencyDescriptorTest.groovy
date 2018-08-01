@@ -246,6 +246,6 @@ class MavenDependencyDescriptorTest extends ExternalDependencyDescriptorTest {
     }
 
     private static MavenDependencyDescriptor mavenDependencyMetadata(MavenScope scope, boolean optional, ModuleComponentSelector selector, List<ExcludeMetadata> excludes) {
-        return new MavenDependencyDescriptor(scope, optional, selector, null, excludes)
+        return new MavenDependencyDescriptor(scope, optional, selector, null, excludes, true)
     }
 }

@@ -45,8 +45,8 @@ class DependencyConstraintMetadataRulesTest extends AbstractDependencyMetadataRu
     def "maven optional dependencies are accessible as dependency constraints"() {
         given:
         def mavenMetadata = mavenMetadataFactory.create(componentIdentifier, [
-            new MavenDependencyDescriptor(MavenScope.Compile, false, newSelector(DefaultModuleIdentifier.newId("org", "notOptional"), "1.0"), null, []),
-            new MavenDependencyDescriptor(MavenScope.Compile, true, newSelector(DefaultModuleIdentifier.newId("org", "optional"), "1.0"), null, [])
+            new MavenDependencyDescriptor(MavenScope.Compile, false, newSelector(DefaultModuleIdentifier.newId("org", "notOptional"), "1.0"), null, [], true),
+            new MavenDependencyDescriptor(MavenScope.Compile, true, newSelector(DefaultModuleIdentifier.newId("org", "optional"), "1.0"), null, [], true)
         ])
 
         when:

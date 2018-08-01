@@ -87,7 +87,7 @@ abstract class AbstractDependencyMetadataRulesTest extends Specification {
     }
     private mavenComponentMetadata(String[] deps) {
         def dependencies = deps.collect { name ->
-            new MavenDependencyDescriptor(MavenScope.Compile, addAllDependenciesAsConstraints(), newSelector(DefaultModuleIdentifier.newId("org.test", name), "1.0"), null, [])
+            new MavenDependencyDescriptor(MavenScope.Compile, addAllDependenciesAsConstraints(), newSelector(DefaultModuleIdentifier.newId("org.test", name), "1.0"), null, [], true)
         }
         mavenMetadataFactory.create(componentIdentifier, dependencies)
     }

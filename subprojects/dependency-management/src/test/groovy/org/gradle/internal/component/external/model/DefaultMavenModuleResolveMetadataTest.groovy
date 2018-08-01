@@ -178,7 +178,7 @@ class DefaultMavenModuleResolveMetadataTest extends AbstractLazyModuleComponentR
 
     def dependency(String org, String module, String version, String scope) {
         def selector = newSelector(DefaultModuleIdentifier.newId(org, module), new DefaultMutableVersionConstraint(version))
-        dependencies.add(new MavenDependencyDescriptor(MavenScope.valueOf(scope), false, selector, null, []))
+        dependencies.add(new MavenDependencyDescriptor(MavenScope.valueOf(scope), false, selector, null, [], true))
     }
 
     private void assertHasOnlyStatusAttribute(AttributeContainer attributes) {

@@ -40,18 +40,21 @@ public class MavenDependencyDescriptor extends ExternalDependencyDescriptor {
     private final MavenScope scope;
     private final boolean optional;
     private final ImmutableList<ExcludeMetadata> excludes;
+    private final boolean transitive;
 
     // A dependency artifact will be defined if the descriptor specified a classifier or non-default type attribute.
     @Nullable
     private final IvyArtifactName dependencyArtifact;
 
     public MavenDependencyDescriptor(MavenScope scope, boolean optional, ModuleComponentSelector selector,
-                                     @Nullable IvyArtifactName dependencyArtifact, List<ExcludeMetadata> excludes) {
+                                     @Nullable IvyArtifactName dependencyArtifact, List<ExcludeMetadata> excludes,
+                                     boolean transitive) {
         this.scope = scope;
         this.selector = selector;
         this.optional = optional;
         this.dependencyArtifact = dependencyArtifact;
         this.excludes = ImmutableList.copyOf(excludes);
+        this.transitive = transitive;
     }
 
     @Override
@@ -70,7 +73,7 @@ public class MavenDependencyDescriptor extends ExternalDependencyDescriptor {
 
     @Override
     public boolean isTransitive() {
-        return true;
+        return transitive;
     }
 
     /**
@@ -112,7 +115,7 @@ public class MavenDependencyDescriptor extends ExternalDependencyDescriptor {
 
     @Override
     protected ExternalDependencyDescriptor withRequested(ModuleComponentSelector newRequested) {
-        return new MavenDependencyDescriptor(scope, isOptional(), newRequested, dependencyArtifact, excludes);
+        return new MavenDependencyDescriptor(scope, isOptional(), newRequested, dependencyArtifact, excludes, transitive);
     }
 
     public List<ExcludeMetadata> getAllExcludes() {

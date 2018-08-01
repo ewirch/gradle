@@ -101,14 +101,14 @@ public class GradlePomModuleDescriptorBuilder {
     }
 
     public void addDependency(PomDependencyData dep) {
-        doAddDependency(dep, dep.isOptional(), false);
+        doAddDependency(dep, dep.isOptional(), false, true);
     }
 
-    public void addOptionalDependency(PomDependencyMgt dep) {
-        doAddDependency(dep, true, true);
+    public void addConstraint(PomDependencyMgt dep) {
+        doAddDependency(dep, true, true, false);
     }
 
-    private void doAddDependency(PomDependencyMgt dep, boolean optional, boolean useCompileScope) {
+    private void doAddDependency(PomDependencyMgt dep, boolean optional, boolean useCompileScope, boolean transitive) {
         MavenScope scope;
         if (useCompileScope) {
             scope = MavenScope.Compile;
@@ -164,7 +164,7 @@ public class GradlePomModuleDescriptorBuilder {
             excludes.add(rule);
         }
 
-        dependencies.add(new MavenDependencyDescriptor(scope, optional, selector, dependencyArtifact, excludes));
+        dependencies.add(new MavenDependencyDescriptor(scope, optional, selector, dependencyArtifact, excludes, transitive));
     }
 
     private String convertVersionFromMavenSyntax(String version) {
@@ -251,7 +251,7 @@ public class GradlePomModuleDescriptorBuilder {
             return;
         }
 
-        dependencies.add(new MavenDependencyDescriptor(MavenScope.Runtime, false, selector, null, ImmutableList.<ExcludeMetadata>of()));
+        dependencies.add(new MavenDependencyDescriptor(MavenScope.Runtime, false, selector, null, ImmutableList.<ExcludeMetadata>of(), true));
     }
 
     private String getDefaultVersion(PomDependencyMgt dep) {

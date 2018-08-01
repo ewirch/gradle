@@ -172,7 +172,8 @@ public class RealisedMavenModuleResolveMetadataSerializationHelper extends Abstr
         List<ExcludeMetadata> mavenExcludes = readMavenExcludes(decoder);
         MavenScope scope = MavenScope.values()[decoder.readSmallInt()];
         boolean optional = decoder.readBoolean();
-        return new MavenDependencyDescriptor(scope, optional, requested, artifactName, mavenExcludes);
+        boolean transitive = decoder.readBoolean();
+        return new MavenDependencyDescriptor(scope, optional, requested, artifactName, mavenExcludes, transitive);
     }
 
     private void writeMavenDependency(Encoder encoder, MavenDependencyDescriptor mavenDependency) throws IOException {
@@ -181,6 +182,7 @@ public class RealisedMavenModuleResolveMetadataSerializationHelper extends Abstr
         writeMavenExcludeRules(encoder, mavenDependency.getAllExcludes());
         encoder.writeSmallInt(mavenDependency.getScope().ordinal());
         encoder.writeBoolean(mavenDependency.isOptional());
+        encoder.writeBoolean(mavenDependency.isTransitive());
     }
 
 }

@@ -301,6 +301,7 @@ public class ModuleMetadataSerializer {
             writeMavenExcludeRules(mavenDependency.getAllExcludes());
             encoder.writeSmallInt(mavenDependency.getScope().ordinal());
             encoder.writeBoolean(mavenDependency.isOptional());
+            encoder.writeBoolean(mavenDependency.isTransitive());
         }
 
         private void writeNullableArtifact(IvyArtifactName artifact) throws IOException {
@@ -648,7 +649,8 @@ public class ModuleMetadataSerializer {
             List<ExcludeMetadata> mavenExcludes = readMavenDependencyExcludes();
             MavenScope scope = MavenScope.values()[decoder.readSmallInt()];
             boolean optional = decoder.readBoolean();
-            return new MavenDependencyDescriptor(scope, optional, requested, artifactName, mavenExcludes);
+            boolean transitive = decoder.readBoolean();
+            return new MavenDependencyDescriptor(scope, optional, requested, artifactName, mavenExcludes, transitive);
         }
 
         private List<ExcludeMetadata> readMavenDependencyExcludes() throws IOException {
