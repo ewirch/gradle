@@ -21,6 +21,7 @@ import org.gradle.internal.deprecation.Deprecatable;
 import org.gradle.internal.deprecation.LoggingDeprecatable;
 
 import java.io.File;
+import java.util.Map;
 import java.util.Set;
 
 public class StartParameterInternal extends StartParameter implements Deprecatable {
@@ -57,4 +58,13 @@ public class StartParameterInternal extends StartParameter implements Deprecatab
     public void setGradleHomeDir(File gradleHomeDir) {
         this.gradleHomeDir = gradleHomeDir;
     }
+
+    public Map<String, String> getEnv() {
+        return env;
+    }
+
+    public void setEnv(Map<String, String> env) {
+        this.env = env;
+    }
+
 }

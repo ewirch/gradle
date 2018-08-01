@@ -21,6 +21,7 @@ import org.apache.commons.io.output.TeeOutputStream;
 import org.gradle.BuildResult;
 import org.gradle.StartParameter;
 import org.gradle.api.GradleException;
+import org.gradle.api.JavaVersion;
 import org.gradle.api.Task;
 import org.gradle.api.execution.TaskExecutionGraph;
 import org.gradle.api.execution.TaskExecutionGraphListener;
@@ -169,6 +170,9 @@ public class InProcessGradleExecuter extends DaemonGradleExecuter {
 
     private boolean isForkRequired() {
         if (isDaemonExplicitlyRequired() || !getJavaHome().equals(Jvm.current().getJavaHome())) {
+            return true;
+        }
+        if (JavaVersion.current().isJava9Compatible() && !buildInvocation().environmentVars.isEmpty()) {
             return true;
         }
         File gradleProperties = new File(getWorkingDir(), "gradle.properties");

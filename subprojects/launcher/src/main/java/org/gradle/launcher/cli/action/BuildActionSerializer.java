@@ -29,12 +29,14 @@ import org.gradle.internal.serialize.Decoder;
 import org.gradle.internal.serialize.DefaultSerializerRegistry;
 import org.gradle.internal.serialize.Encoder;
 import org.gradle.internal.serialize.ListSerializer;
+import org.gradle.internal.serialize.MapSerializer;
 import org.gradle.internal.serialize.Serializer;
 import org.gradle.internal.serialize.SetSerializer;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.gradle.internal.serialize.BaseSerializerFactory.FILE_SERIALIZER;
@@ -58,6 +60,7 @@ public class BuildActionSerializer {
         private final Serializer<List<String>> stringListSerializer = new ListSerializer<String>(BaseSerializerFactory.STRING_SERIALIZER);
         private final Serializer<List<File>> fileListSerializer = new ListSerializer<File>(BaseSerializerFactory.FILE_SERIALIZER);
         private final Serializer<Set<String>> stringSetSerializer = new SetSerializer<String>(BaseSerializerFactory.STRING_SERIALIZER);
+        private final Serializer<Map<String, String>> stringMapSerializer = new MapSerializer<String, String>(BaseSerializerFactory.STRING_SERIALIZER, BaseSerializerFactory.STRING_SERIALIZER);
 
         ExecuteBuildActionSerializer() {
             BaseSerializerFactory serializerFactory = new BaseSerializerFactory();
@@ -102,6 +105,7 @@ public class BuildActionSerializer {
             NO_NULL_STRING_MAP_SERIALIZER.write(encoder, startParameter.getSystemPropertiesArgs());
             fileListSerializer.write(encoder, startParameter.getInitScripts());
             stringListSerializer.write(encoder, startParameter.getLockedDependenciesToUpdate());
+            stringMapSerializer.write(encoder, startParameter.getEnv());
 
             // Flags
             encoder.writeBoolean(startParameter.isBuildProjectDependencies());
@@ -174,6 +178,7 @@ public class BuildActionSerializer {
             startParameter.setSystemPropertiesArgs(NO_NULL_STRING_MAP_SERIALIZER.read(decoder));
             startParameter.setInitScripts(fileListSerializer.read(decoder));
             startParameter.setLockedDependenciesToUpdate(stringListSerializer.read(decoder));
+            startParameter.setEnv(stringMapSerializer.read(decoder));
 
             // Flags
             startParameter.setBuildProjectDependencies(decoder.readBoolean());
